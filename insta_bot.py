@@ -43,7 +43,7 @@ from instabot import Bot
 
 # --- 1. معلومات تسجيل الدخول لحساب إنستغرام (يجب تغييرها) ---
 # ⚠️ تم تعديل هذا الجزء لقراءة البيانات من متغيرات البيئة (GitHub Secrets)
-INSTAGRAM_USERNAME = os.environ.get("INSTAGRAM_USERNAME", "x198_88")
+INSTAGRAM_USERNAME = os.environ.get("INSTAGRAM_USERNAME", "xx0905443")
 INSTAGRAM_PASSWORD = os.environ.get("INSTAGRAM_PASSWORD", "rZUXNM6Q")
 
 # --- 2. معلومات بوت تليجرام (يجب تغييرها) ---
