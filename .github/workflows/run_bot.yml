@@ -39,4 +39,5 @@ jobs:
         INSTAGRAM_PASSWORD: ${{ secrets.INSTAGRAM_PASSWORD }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-      run: python your_bot_file_name.py # ⚠️ تأكد من تغيير هذا الاسم لاسم ملف البوت لديك
+      # ⚠️ تم التعديل هنا ليتطابق مع اسم ملفك الفعلي (insta_bot.py)
+      run: python insta_bot.py
