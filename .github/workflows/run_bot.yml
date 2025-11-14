@@ -4,7 +4,7 @@ name: Instagram DM Auto-Reply Bot
 on:
   # التشغيل المجدول (كل 4 ساعات)
   schedule:
-    - cron: '0 */4 * * *' 
+    - cron: '0 */4 * * *'  # يتم التشغيل كل 4 ساعات 
   
   # يتيح لك تشغيل البوت يدوياً من واجهة GitHub
   workflow_dispatch:
