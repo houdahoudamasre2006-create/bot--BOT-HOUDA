@@ -2,15 +2,12 @@ import os
 import sys
 import time
 import random
-import json
 import subprocess
-from instagrapi import Client
-from instagrapi.exceptions import LoginRequired, BadCredentials, TwoFactorRequired
-import traceback
+from instabot import Bot
 
 # قائمة المكتبات التي نحتاج إلى التأكد من أنها مثبتة
 required_libraries = [
-    "instagrapi"
+    "instabot"
 ]
 
 # دالة لتثبيت المكتبات تلقائيًا إذا كانت مفقودة
@@ -24,63 +21,45 @@ def setup_environment():
             subprocess.check_call([sys.executable, "-m", "pip", "install", library])
 
 # بيانات الدخول
-USERNAME = "sjsoqoqkmbii21@gmail.com"
+USERNAME = "sjsoqoqkmbii21"
 PASSWORD = "houdaelmastr3##12"
 SESSION_FILE = "session.json"
 AUTO_REPLY_MESSAGE = "Hello, thank you for your message. We will reply to you as soon as possible. Thank you!"
 
 # تسجيل الدخول مع دعم الجلسات
 def login():
-    cl = Client()
+    bot = Bot()
 
+    # تحميل الجلسة إذا كانت موجودة
     if os.path.exists(SESSION_FILE):
         try:
-            cl.load_settings(SESSION_FILE)
-            cl.login(USERNAME, PASSWORD)
+            bot.load_settings(SESSION_FILE)
+            bot.login(username=USERNAME, password=PASSWORD)
             print("✅ تم تسجيل الدخول باستخدام الجلسة المحفوظة.")
-            return cl
+            return bot
         except Exception as e:
             print(f"⚠️ فشل في تحميل الجلسة، إعادة المحاولة بتسجيل دخول جديد: {e}")
-            traceback.print_exc()  # لمعرفة تفاصيل الخطأ
 
-    try:
-        cl.login(USERNAME, PASSWORD)
-        cl.dump_settings(SESSION_FILE)
-        print("✅ تسجيل الدخول بنجاح.")
-    except TwoFactorRequired:
-        code = input("أدخل رمز 2FA: ")
-        cl.login(USERNAME, PASSWORD, verification_code=code)
-        cl.dump_settings(SESSION_FILE)
-        print("✅ تسجيل الدخول بنجاح باستخدام 2FA.")
-    except BadCredentials as e:
-        print(f"❌ اسم المستخدم أو كلمة المرور غير صحيحة: {e}")
-        sys.exit(1)
-    except Exception as e:
-        print(f"❌ خطأ غير متوقع أثناء تسجيل الدخول: {e}")
-        traceback.print_exc()
-        sys.exit(1)
-
-    return cl
+    # تسجيل الدخول بشكل طبيعي
+    bot.login(username=USERNAME, password=PASSWORD)
+    bot.dump_settings(SESSION_FILE)
+    print("✅ تسجيل الدخول بنجاح.")
+    
+    return bot
 
 # جلب معلومات الحساب بشكل آمن
-def get_account_info(cl):
+def get_account_info(bot):
     try:
-        user_id = cl.user_id
-        try:
-            info = cl.user_info(user_id)
-        except Exception:
-            info = cl.user_info_by_username(USERNAME)
-
+        user_info = bot.get_user_info(bot.user_id)
         print("\n📊 معلومات الحساب:")
-        print(f"👤 الاسم الكامل: {info.full_name}")
-        print(f"🧑‍💻 اسم المستخدم: {info.username}")
-        print(f"🔹 المتابعين: {info.follower_count}")
-        print(f"🔸 المتابعين لهم: {info.following_count}")
-        print(f"🔄 المنشورات: {info.media_count}")
+        print(f"👤 الاسم الكامل: {user_info['full_name']}")
+        print(f"🧑‍💻 اسم المستخدم: {user_info['username']}")
+        print(f"🔹 المتابعين: {user_info['follower_count']}")
+        print(f"🔸 المتابعين لهم: {user_info['following_count']}")
+        print(f"🔄 المنشورات: {user_info['media_count']}")
         print("===================================")
     except Exception as e:
         print(f"❌ فشل في جلب معلومات الحساب بشكل آمن: {e}")
-        traceback.print_exc()
 
 # محاكاة الكتابة البشرية
 def simulate_typing(text, delay=0.15):
@@ -90,46 +69,38 @@ def simulate_typing(text, delay=0.15):
     print()
 
 # الرد التلقائي على الرسائل المباشرة
-def auto_reply(cl):
+def auto_reply(bot):
     print("⏳ بدأ المراقبة للرسائل المباشرة...")
 
     while True:
         try:
-            threads = cl.direct_threads()
+            threads = bot.get_messages()
 
             if not threads:
                 print("💤 لا توجد رسائل جديدة.")
 
             for thread in threads:
                 try:
-                    messages = cl.direct_messages(thread.id)
+                    messages = bot.get_messages(thread)
 
                     for msg in messages:
-                        if msg.user_id != cl.user_id:
-                            print(f"📩 رسالة واردة: {msg.text}")
+                        if msg['user_id'] != bot.user_id:
+                            print(f"📩 رسالة واردة: {msg['text']}")
                             print("✅ الكتابة والرد التلقائي...")
 
                             simulate_typing(AUTO_REPLY_MESSAGE)
-                            cl.direct_send(AUTO_REPLY_MESSAGE, thread.id)
+                            bot.send_message(AUTO_REPLY_MESSAGE, thread)
                             print("✅ تم إرسال الرد التلقائي.")
                             time.sleep(random.uniform(3, 6))
 
                 except Exception as e:
-                    if "403" in str(e):
-                        print(f"⚠️ تم الوصول إلى حد المعدل أو تم الحظر، الانتظار لمدة دقيقتين...")
-                        time.sleep(random.uniform(120, 180))
-                    else:
-                        print(f"❌ خطأ أثناء فحص الرسائل في الخيط {thread.id}: {e}")
-                        time.sleep(30)
+                    print(f"❌ خطأ أثناء فحص الرسائل في الخيط {thread['id']}: {e}")
+                    time.sleep(30)
 
             time.sleep(random.uniform(60, 120))
 
-        except LoginRequired:
-            print("⚠️ تم تسجيل الخروج، إعادة تسجيل الدخول...")
-            cl = login()
         except Exception as e:
             print(f"❌ خطأ عام في الحلقة: {e}")
-            traceback.print_exc()
             time.sleep(60)
 
 if __name__ == "__main__":
@@ -137,10 +108,10 @@ if __name__ == "__main__":
     setup_environment()
 
     # تسجيل الدخول
-    cl = login()
+    bot = login()
 
     # جلب معلومات الحساب
-    get_account_info(cl)
+    get_account_info(bot)
 
     # الرد التلقائي على الرسائل
-    auto_reply(cl)
+    auto_reply(bot)
