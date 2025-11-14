@@ -1,43 +1,9 @@
-name: Instagram DM Auto-Reply Bot
-
-# ⏱️ يحدد متى يتم تشغيل هذا العمل
-on:
-  # التشغيل المجدول (كل 4 ساعات)
-  # (0 */4 * * * تعني: في الدقيقة 0 من الساعات 0, 4, 8, 12, 16, 20 بتوقيت UTC)
-  schedule:
-    - cron: '0 */4 * * *' 
-  
-  # يتيح لك تشغيل البوت يدوياً من واجهة GitHub
-  workflow_dispatch:
-
-jobs:
-  run-instagram-bot:
-    runs-on: ubuntu-latest # اختيار نظام تشغيل لينكس
-    
-    steps:
-    # 1. سحب الكود من المستودع
-    - name: Checkout repository code
-      uses: actions/checkout@v4
-    
-    # 2. إعداد بيئة بايثون
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-        
-    # 3. تثبيت المكتبات من ملف requirements.txt
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        
-    # 4. تشغيل كود البوت (مع تمرير الأسرار كمتغيرات بيئة)
+# 4. (الجديدة) حذف ملفات الكاش القديمة
+    - name: Clean Instabot Cache
+      run: rm -rf *.json 
+      
+    # 5. تشغيل كود البوت
     - name: Run Instagram Bot Script
       env:
-        # هنا يتم قراءة الأسرار التي يجب عليك إعدادها في إعدادات GitHub
-        INSTAGRAM_USERNAME: ${{ secrets.INSTAGRAM_USERNAME }}
-        INSTAGRAM_PASSWORD: ${{ secrets.INSTAGRAM_PASSWORD }}
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-      # ⚠️ تم التعديل هنا ليتطابق مع اسم ملفك الفعلي (insta_bot.py)
+        # ... (متغيرات البيئة) ...
       run: python insta_bot.py
