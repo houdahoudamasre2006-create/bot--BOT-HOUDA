@@ -4,6 +4,8 @@ import time
 import random
 import json
 import subprocess
+from instagrapi import Client
+from instagrapi.exceptions import LoginRequired, BadCredentials, TwoFactorRequired
 
 # قائمة المكتبات التي نحتاج إلى التأكد من أنها مثبتة
 required_libraries = [
