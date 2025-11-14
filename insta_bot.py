@@ -24,7 +24,7 @@ def setup_environment():
             subprocess.check_call([sys.executable, "-m", "pip", "install", library])
 
 # بيانات الدخول
-USERNAME = "sjsoqoqkmbii21"
+USERNAME = "sjsoqoqkmbii21@gmail.com"
 PASSWORD = "houdaelmastr3##12"
 SESSION_FILE = "session.json"
 AUTO_REPLY_MESSAGE = "Hello, thank you for your message. We will reply to you as soon as possible. Thank you!"
