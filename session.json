@@ -1,0 +1,15 @@
+{
+  "username": "sjsoqoqkmbii21",
+  "password": "houdaelmastr3##12",
+  "settings": {
+    "cookies": {
+      "csrftoken": "csrftoken_value",
+      "ds_user_id": "user_id_value",
+      "sessionid": "session_id_value",
+      "mid": "mid_value"
+    },
+    "logged_in": true,
+    "expires_in": 2592000,
+    "session": "session_data_here"
+  }
+}
