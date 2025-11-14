@@ -6,6 +6,7 @@ import json
 import subprocess
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired, BadCredentials, TwoFactorRequired
+import traceback
 
 # قائمة المكتبات التي نحتاج إلى التأكد من أنها مثبتة
 required_libraries = [
@@ -40,6 +41,7 @@ def login():
             return cl
         except Exception as e:
             print(f"⚠️ فشل في تحميل الجلسة، إعادة المحاولة بتسجيل دخول جديد: {e}")
+            traceback.print_exc()  # لمعرفة تفاصيل الخطأ
 
     try:
         cl.login(USERNAME, PASSWORD)
@@ -55,6 +57,7 @@ def login():
         sys.exit(1)
     except Exception as e:
         print(f"❌ خطأ غير متوقع أثناء تسجيل الدخول: {e}")
+        traceback.print_exc()
         sys.exit(1)
 
     return cl
@@ -77,6 +80,7 @@ def get_account_info(cl):
         print("===================================")
     except Exception as e:
         print(f"❌ فشل في جلب معلومات الحساب بشكل آمن: {e}")
+        traceback.print_exc()
 
 # محاكاة الكتابة البشرية
 def simulate_typing(text, delay=0.15):
@@ -113,7 +117,7 @@ def auto_reply(cl):
                 except Exception as e:
                     if "403" in str(e):
                         print(f"⚠️ تم الوصول إلى حد المعدل أو تم الحظر، الانتظار لمدة دقيقتين...")
-                        time.sleep(120)
+                        time.sleep(random.uniform(120, 180))
                     else:
                         print(f"❌ خطأ أثناء فحص الرسائل في الخيط {thread.id}: {e}")
                         time.sleep(30)
@@ -125,6 +129,7 @@ def auto_reply(cl):
             cl = login()
         except Exception as e:
             print(f"❌ خطأ عام في الحلقة: {e}")
+            traceback.print_exc()
             time.sleep(60)
 
 if __name__ == "__main__":
