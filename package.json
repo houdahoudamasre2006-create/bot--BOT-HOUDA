@@ -7,8 +7,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@grammyjs/grammy": "^2.0.0", 
-    "dotenv": "^10.0.0"
+    "@grammyjs/grammy": "^2.0.0",  
   },
   "devDependencies": {},
   "author": "Your Name",
