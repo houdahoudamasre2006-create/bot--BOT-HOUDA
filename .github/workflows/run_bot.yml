@@ -1,29 +1,25 @@
-name: Run Bot on GitHub
+name: Deploy Telegram Bot
 
 on:
   push:
     branches:
-      - main  # أو الفرع الذي تريد أن تعمل عليه
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # استخدم نظام التشغيل الذي ترغب في تشغيل البوت عليه
+    runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout الكود
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      # 2. إعداد Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'  # تأكد من أنك تستخدم نفس الإصدار الذي تحتاجه
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
 
-      # 3. تثبيت الحزم
-      - name: Install dependencies
-        run: npm install  # أو yarn install إذا كنت تستخدم Yarn
+    - name: Install dependencies
+      run: npm install
 
-      # 4. تشغيل البوت
-      - name: Run Bot
-        run: node bot.js  # هنا يشير إلى اسم ملف البوت
+    - name: Run the bot
+      run: node index.js
