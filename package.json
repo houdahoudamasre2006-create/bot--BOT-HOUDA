@@ -1,0 +1,15 @@
+{
+  "name": "your-project-name",    // اسم المشروع
+  "version": "1.0.0",             // رقم الإصدار
+  "description": "A simple Telegram bot",  // وصف المشروع
+  "main": "index.js",             // الملف الرئيسي للتطبيق
+  "scripts": {
+    "start": "node index.js"      // السكربت لتشغيل التطبيق
+  },
+  "dependencies": {
+    "@grammyjs/grammy": "^2.0.0"  // مثال على المكتبة التي يحتاجها البوت
+  },
+  "devDependencies": {},
+  "author": "Your Name",          // اسمك
+  "license": "MIT"                // الترخيص (اختياري)
+}
