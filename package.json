@@ -1,13 +1,13 @@
 {
   "name": "telegram-bot",
   "version": "1.0.0",
-  "description": "A simple Telegram bot using Telegram library",
+  "description": "A simple Telegram bot using node-telegram-bot-api",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "telegram": "^0.7.0",
+    "node-telegram-bot-api": "^0.55.0", 
     "dotenv": "^10.0.0"
   },
   "devDependencies": {},
