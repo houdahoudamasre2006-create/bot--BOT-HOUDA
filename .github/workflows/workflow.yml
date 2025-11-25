@@ -10,19 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Check out code
       uses: actions/checkout@v2
-
-    - name: Set npm registry
-      run: npm config set registry https://registry.npmjs.org/
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '18'
+        node-version: '18'  # استخدم نسخة Node.js المناسبة لك
 
     - name: Install dependencies
       run: npm install
 
     - name: Run the bot
-      run: node index.js
+      run: node index.js  # أو الملف الذي يحتوي على البوت الخاص بك
