@@ -1,13 +1,13 @@
 {
   "name": "telegram-bot",
   "version": "1.0.0",
-  "description": "A Telegram bot using Telegram API (TDLib) for personal account",
+  "description": "A simple Telegram bot using Grammy",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "telegram": "^0.0.9",
+    "@grammyjs/grammy": "^2.0.0",
     "dotenv": "^10.0.0"
   },
   "devDependencies": {},
